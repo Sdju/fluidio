@@ -1,5 +1,5 @@
 .idea
-dist
+lib
 docs
 docs-src
 node_modules
