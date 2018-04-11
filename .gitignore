@@ -1,0 +1,5 @@
+.idea
+dist
+docs
+docs-src
+node_modules
