@@ -2,10 +2,20 @@
   "name": "fluidio",
   "version": "0.0.1",
   "description": "super easy to use Node.js framework",
-  "main": "dist/index.node.js",
+  "main": "lib/index.node.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sdju/fluidio.git"
+  },
+  "bugs": {
+    "email": "zede@ventumit.ru",
+    "src": "https://github.com/Sdju/fluidioi/issues"
+  },
   "scripts": {
     "test": "jest",
-    "build": "tsc -p tsconfig.json",
+    "build": "npm run lint && tsc -p tsconfig.json",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "build-docs": "typedoc --options typedoc.json --json \"docs-src/typedoc.json\" src/"
   },
   "keywords": [
@@ -34,9 +44,14 @@
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.11.1",
     "@types/express-fileupload": "^0.1.1",
+    "@types/jest": "^22.2.2",
     "@types/moment": "^2.13.0",
     "@types/morgan": "^1.7.35",
     "@types/node": "^9.6.0",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.2",
+    "tslint": "^5.9.1",
+    "tslint-config-airbnb": "^5.8.0",
     "typedoc": "^0.11.1",
     "typescript": "^2.7.2"
   }
