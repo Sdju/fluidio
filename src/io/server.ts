@@ -4,13 +4,10 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as cookieParser from 'cookie-parser';
 import * as fileUpload from 'express-fileupload';
-import chalk from 'chalk';
-import * as moment from 'moment';
-
 import * as http from 'http';
 
-/** Тип для указания порта */
-export type Port = string | number;
+import { Port } from './interfaces';
+import { serverLogging, normalizePort } from './tools';
 
 /**
  * Задаваемые пользователем параметры конфигурации сервера
@@ -43,41 +40,6 @@ interface InnerServerConfig {
   customLogger: logger.FormatFn;
 }
 
-
-function getIp(req: express.Request): string {
-  const ipString: string | string[] | undefined = req.headers['x-forwarded-for'] ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress;
-  return (typeof ipString === 'string') ? ipString.split(',')[0] : 'xxx.xxx.xxx.xxx';
-}
-
-function serverLogging(tokens: logger.TokenIndexer,
-                       req: express.Request,
-                       res: express.Response): string {
-  const time = chalk.blue(moment({}).format('HH:mm:ss:SSS'));
-  const ip = getIp(req);
-  const method = chalk.blueBright(tokens.method(req, res));
-  const url = tokens.url(req, res);
-  const statusNum = tokens.status(req, res);
-  const status = (+statusNum >= 400)
-    ? chalk.red(statusNum)
-    : ((+statusNum >= 300) ? chalk.green(statusNum) : chalk.blue(statusNum));
-  const size = tokens.res(req, res, 'content-length');
-  const respTime = tokens['response-time'](req, res);
-  return `(${time}) [${ip}] ${method} ${url} ${status} - ${respTime}ms (${size || 0} bytes)`;
-}
-
-function normalizePort(val: Port): number {
-  const port: number = (typeof val === 'string') ? parseInt(val, 10) : val;
-  if (isNaN(port)) {
-    return <number>val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  throw Error(`Unsupported port value: ${val}`);
-}
-
 function serverConfigAdapter(config: ServerConfig): InnerServerConfig {
   const res: ServerConfig = {
     port: 8000,
@@ -107,6 +69,7 @@ export class Server {
     const app: express.Application = express();
     app.set('views', config.viewDir);
     app.set('view engine', config.viewEngine);
+    app.set('x-powered-by', false);
 
     app.use(logger(config.customLogger));
     app.use(fileUpload());
