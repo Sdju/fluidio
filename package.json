@@ -2,7 +2,7 @@
   "name": "fluidio",
   "version": "0.0.1",
   "description": "super easy to use Node.js framework",
-  "main": "lib/index.node.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
