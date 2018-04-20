@@ -44,6 +44,7 @@ function serverConfigAdapter(config: ServerConfig): InnerServerConfig {
   const res: ServerConfig = {
     port: 8000,
     customLogger: serverLogging,
+    viewEngine: 'pug',
     ...config,
   };
   if (config.viewDir === void 0) {
