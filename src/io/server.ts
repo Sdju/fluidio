@@ -95,6 +95,13 @@ export class Server {
     this.server.listen(this.config.port);
   }
 
+  /**
+   * Добавляет middleware обработки
+   * */
+  public use(middleware: express.RequestHandler | express.Router) {
+    this.app.use(middleware);
+  }
+
   private app: express.Application;
   private config: InnerServerConfig;
   private server: http.Server | null;
